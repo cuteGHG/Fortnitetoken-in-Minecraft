@@ -1,0 +1,6 @@
+name: FortniteToken
+version: 1.0.0
+main: de.cuteghg.fortnitetoken.FortniteTokenPlugin
+api-version: '26.3'
+author: cuteGHG
+description: Gives a rare Fortnite-style Token from naturally generated dungeon chests.
