@@ -1,0 +1,27 @@
+# FortniteToken-Konfiguration
+# Nach Änderungen: /fttoken reload
+
+# Drop-Chance: 1 aus N Öffnungen eines markierten, natürlich generierten Loot-Containers.
+# Beispiele: 1000 = 1:1000, 500 = 1:500, 1 = jedes Mal.
+drop-chance:
+  denominator: 1000
+
+token:
+  # Beliebiges gültiges Bukkit-Material, z. B. SUNFLOWER, EMERALD oder DIAMOND.
+  material: SUNFLOWER
+  # Farbcodes mit & möglich, z. B. &6 für Gold.
+  display-name: "&6Token"
+  lore:
+    - "&7Ein seltener Fortnite-Token"
+    - "&8Gefunden in einer natürlich generierten Truhe"
+
+animation:
+  announcement:
+    enabled: true
+    message: "&6✦ &eULTRA RARER TOKEN GEFUNDEN! &6✦"
+  particles:
+    enabled: true
+  sounds:
+    enabled: true
+  # Dauer der Partikel-Animation in Ticks (20 Ticks = 1 Sekunde), maximal 200.
+  duration-ticks: 40
