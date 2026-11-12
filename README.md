@@ -5,17 +5,49 @@ Paper plugin for Minecraft/Paper 26.3.
 ## Features
 - Checks naturally generated loot containers in loaded chunks, not just dungeon chests.
 - Works with naturally generated containers that have a vanilla loot table (including different structure chest loot tables).
-- A 1-in-1000 chance each time a marked natural loot container is opened.
-- Gives the player a sunflower named **Token** with a plugin-specific persistent marker.
-- Plays a short rare-drop animation with particles, sounds, and a chat announcement.
+- Configurable 1-in-N chance when a marked natural loot container is opened.
+- Configurable token material, display name, and lore.
+- Configurable announcement, particle effects, sound effects, and animation duration.
+- Gives the player a token with a plugin-specific persistent marker.
 - If the inventory is full, the Token drops naturally at the player's feet.
-- Test command: `/fttoken test` gives a Token and plays the same animation without requiring a chest.
+- Test command: `/fttoken test` gives a Token and plays the same animation.
+- Reload command: `/fttoken reload` reloads `plugins/FortniteToken/config.yml` without restarting the server.
 
-## Test command permission
-- Permission: `fortnitetoken.test`
-- Default: operators (`op`)
-- Grant explicitly with: `/lp user <player> permission set fortnitetoken.test true` (LuckPerms)
-- Run: `/fttoken test`
+## Configuration
+
+The default `config.yml` is generated automatically on the first start. Example:
+
+```yaml
+drop-chance:
+  denominator: 1000
+
+token:
+  material: SUNFLOWER
+  display-name: "&6Token"
+  lore:
+    - "&7Ein seltener Fortnite-Token"
+    - "&8Gefunden in einer natürlich generierten Truhe"
+
+animation:
+  announcement:
+    enabled: true
+    message: "&6✦ &eULTRA RARER TOKEN GEFUNDEN! &6✦"
+  particles:
+    enabled: true
+  sounds:
+    enabled: true
+  duration-ticks: 40
+```
+
+- `denominator: 1000` means 1 chance in 1000; `500` means 1 in 500; `1` means every eligible opening.
+- `token.material` accepts a valid Bukkit material such as `SUNFLOWER`, `EMERALD`, or `DIAMOND`.
+- Use `&` color codes in `display-name`, `lore`, and the announcement.
+- Animation duration is in ticks (20 ticks = 1 second; maximum 200).
+- Run `/fttoken reload` after editing the config.
+
+## Permissions
+- `fortnitetoken.test`: allows `/fttoken test` (default: operators).
+- `fortnitetoken.admin`: allows `/fttoken reload` (default: operators).
 
 ## Build
 Requirements: JDK 25 and Gradle.
@@ -24,11 +56,11 @@ Requirements: JDK 25 and Gradle.
 gradle build
 ```
 
-The plugin JAR is created in `build/libs/FortniteToken-1.1.0.jar`.
+The plugin JAR is created in `build/libs/FortniteToken-1.2.0.jar`.
 
 Copy the JAR into the server's `plugins` folder and restart Paper 26.3.
 
 ## Detection details and limitation
 On chunk load, the plugin marks tile entities that still have a vanilla loot table. This preserves the natural-container marker after Minecraft consumes the loot table on first opening. Player-placed containers do not have a loot table when placed and are not marked.
 
-As with any Bukkit/Paper plugin, the final behavior should be verified on the exact server build. The included test command independently verifies reward delivery and animation.
+As with any Bukkit/Paper plugin, verify behavior on the exact server build.
