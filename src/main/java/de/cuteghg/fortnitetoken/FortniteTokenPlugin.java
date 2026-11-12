@@ -36,21 +36,29 @@ public final class FortniteTokenPlugin extends JavaPlugin implements Listener {
         tokenKey = new NamespacedKey(this, "fortnite_token");
         naturalContainerKey = new NamespacedKey(this, "natural_loot_container");
         Bukkit.getPluginManager().registerEvents(this, this);
+        // Bereits geladene Chunks ebenfalls erfassen (z. B. nach Installation bei laufendem Server).
+        for (var world : Bukkit.getWorlds()) {
+            for (var chunk : world.getLoadedChunks()) {
+                markNaturalLootContainers(chunk);
+            }
+        }
         getLogger().info("FortniteToken aktiviert. Chance: 1:1000 bei natürlich generierten Loot-Containern.");
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        // Markiert Loot-Container bereits beim Laden des Chunks. So bleibt die
-        // Herkunft auch nach dem ersten Öffnen erhalten, wenn die Loot-Tabelle
-        // von Minecraft entfernt wurde. Spieler-Truhen haben keine Loot-Tabelle.
-        for (BlockState state : event.getChunk().getTileEntities()) {
+        markNaturalLootContainers(event.getChunk());
+    }
+
+    private void markNaturalLootContainers(org.bukkit.Chunk chunk) {
+        // Markiert Loot-Container beim Laden des Chunks. Die Markierung bleibt
+        // auch nach dem ersten Öffnen erhalten, wenn Minecraft die Loot-Tabelle entfernt.
+        for (BlockState state : chunk.getTileEntities()) {
             if (!(state instanceof TileState tile) || !(state instanceof Lootable lootable)) {
                 continue;
             }
-            if (lootable.getLootTable() == null) {
-                continue;
-            }
+            if (lootable.getLootTable() == null) continue;
+            if (tile.getPersistentDataContainer().has(naturalContainerKey, PersistentDataType.BYTE)) continue;
             tile.getPersistentDataContainer().set(naturalContainerKey, PersistentDataType.BYTE, (byte) 1);
             tile.update(true, false);
         }
