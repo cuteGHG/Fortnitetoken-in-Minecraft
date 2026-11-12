@@ -36,6 +36,9 @@ public final class FortniteTokenPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onDungeonChestOpen(InventoryOpenEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
         if (!(event.getPlayer() instanceof Player player)) {
             return;
         }
@@ -65,7 +68,8 @@ public final class FortniteTokenPlugin extends JavaPlugin implements Listener {
             return;
         }
 
-        player.getInventory().addItem(createToken());
+        var leftovers = player.getInventory().addItem(createToken());
+        leftovers.values().forEach(item -> player.getWorld().dropItemNaturally(player.getLocation(), item));
         playWinAnimation(player, block.getLocation().add(0.5, 1.0, 0.5));
     }
 
