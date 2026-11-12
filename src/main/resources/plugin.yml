@@ -1,6 +1,15 @@
 name: FortniteToken
-version: 1.0.0
+version: 1.1.0
 main: de.cuteghg.fortnitetoken.FortniteTokenPlugin
 api-version: '26.3'
 author: cuteGHG
-description: Gives a rare Fortnite-style Token from naturally generated dungeon chests.
+description: Gives a rare Token from naturally generated loot containers.
+commands:
+  fttoken:
+    description: FortniteToken test command
+    usage: /fttoken test
+    permission: fortnitetoken.test
+permissions:
+  fortnitetoken.test:
+    description: Allows testing the FortniteToken reward and animation
+    default: op
